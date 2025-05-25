@@ -1,25 +1,41 @@
 import random
-import pygame
 from game.Card import Card # Card 파일에서 Card 클래스 불러옴
+from game.Difficulty import Difficulty
 
-DEFAULT_CARD_SET_SIZE = 10
+from PySide6.QtWidgets import QGridLayout
 
-class CardSet: # 카드셋 클래스의 도입부
-    def __init__(self): # 클래스 초기화 메서드
-        self.resize() # 카드 개수를 세트
-        self.shuffle() # 카드를 섞기
-        self.draw()
-    
-    def draw(self):
-        for idx, card in enumerate(self.cards):
-            card.coords = 90 + idx % 5 * 150, 90 + idx // 5 * 150
-            card.close()
+class CardSet(QGridLayout): # 카드셋 클래스의 도입부
+    difficulty = Difficulty.BEGINNER
+    cards = []
+
+    def __init__(self, difficulty: Difficulty, card_clicked: callable): # 클래스 초기화 메서드
+        super().__init__()
         
-        pygame.display.flip()
+        self.card_clicked = card_clicked
+        self.difficulty = difficulty
 
-    def resize(self, size=DEFAULT_CARD_SET_SIZE): # 카드 개수를 세트하는 메서드
-        self.size = size # size 인자를 클래스의 size 필드에 세트
-        self.cards = [Card(i) for _ in range(1) for i in range(0, self.size)] # 클래스의 cards필드에 카드들을 사이즈에 맞게 세트
+        self.reset() # 카드를 세트
+        self.shuffle() # 카드를 섞기
+    
+    def unregister(self):
+        for card in self.cards:
+            self.removeWidget(card)
+
+    def register(self):
+        for idx, card in enumerate(self.cards):
+            row, col = divmod(idx, self.difficulty.value)
+            self.addWidget(card, row, col)
+
+    def reset(self): # 카드를 세트하는 메서드        
+        self.unregister()
+        self.cards = [Card(i, lambda card: self.card_clicked(card)) for _ in range(2) for i in range(0, self.difficulty.value)] # 클래스의 cards필드에 카드들을 사이즈에 맞게 세트
+        self.register()
 
     def shuffle(self): # 카드를 섞는 메서드
+        self.unregister()
         random.shuffle(self.cards)
+        self.register()
+
+    @property
+    def end(self):
+        return all(card.is_opened for card in self.cards)

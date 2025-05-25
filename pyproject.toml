@@ -7,7 +7,7 @@ name = "memory-game"
 version = "0.1.0"
 description = "메모리 게임"
 dependencies = [
-    "pygame",
+    "PySide6",
 ]
 requires-python = ">=3.9"
 
