@@ -1,6 +1,5 @@
 from enum import Enum
 from PySide6.QtWidgets import QMainWindow, QMenuBar, QMenu, QWidget, QHBoxLayout, QVBoxLayout, QMessageBox
-from PySide6.QtGui import QAction
 from PySide6.QtTest import QTest
 
 from game.Util import Util
@@ -68,7 +67,8 @@ class MainWindow(QMainWindow):
             self.timer.stop()
         return super().closeEvent(event)
 
-    def card_clicked(self, card: Card):
+    def card_clicked(self):
+        card = self.sender()
         if card.is_opened:
             return
         match self.opening_status:
@@ -120,5 +120,6 @@ class MainWindow(QMainWindow):
     def difficulty_triggered(self):
         for action in self.difficulty_actions:
             action.setChecked(False)
-        self.sender().setChecked(True)
-        self.set_difficulty(Difficulty[self.sender().objectName()])
+        action = self.sender()
+        action.setChecked(True)
+        self.set_difficulty(Difficulty[action.objectName()])

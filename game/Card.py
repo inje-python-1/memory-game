@@ -12,7 +12,7 @@ class Card(QPushButton): # 카드 클래스의 도입부
         super().__init__()
 
         self.__id = id # id 인자를 클래스의 __id 필드에 세트
-        self.clicked.connect(lambda: clicked(self))
+        self.clicked.connect(clicked)
         
         self.cover_pixmap = QPixmap(os.path.join("assets", "card", f"cover.png"))
         self.picture_pixmap = QPixmap(os.path.join("assets", "card", f"{self.__id}.png"))
