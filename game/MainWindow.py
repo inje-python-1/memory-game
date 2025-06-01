@@ -109,13 +109,13 @@ class MainWindow(QMainWindow):
         self.timer.start()
         if hasattr(self, "card_set"):
             Util.deleteItemsOfLayout(self.card_set)
-        
+
         self.card_set = CardSet(self.__difficulty, self.card_clicked)
         self.layout.addLayout(self.card_set)
-        self.resize(0, 0)
-        self.centralWidget().update()
-
         self.tries_status.value = 0
+
+        QTest.qWait(10)
+        self.resize(0, 0)
 
     def set_difficulty(self, difficulty: Difficulty):
         self.__difficulty = difficulty
