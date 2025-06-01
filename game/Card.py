@@ -1,9 +1,5 @@
 import os
-from PySide6.QtWidgets import QPushButton
-from PySide6.QtGui import QPixmap
-from PySide6.QtCore import QSize
-
-CARD_SIZE = 110, 110
+from PySide6.QtWidgets import QPushButton 
 
 class Card(QPushButton): # 카드 클래스의 도입부
     is_opened = False
@@ -14,10 +10,10 @@ class Card(QPushButton): # 카드 클래스의 도입부
         self.__id = id # id 인자를 클래스의 __id 필드에 세트
         self.clicked.connect(lambda: clicked(self))
         
-        self.cover_pixmap = QPixmap(os.path.join("assets", "card", f"cover.png"))
-        self.picture_pixmap = QPixmap(os.path.join("assets", "card", f"{self.__id}.png"))
-        
-        self.setIconSize(QSize(100, 100))
+        self.cover_stylesheet = f"border-image: url({os.path.join('assets', 'card', 'cover.jpg')});"
+        self.picture_stylesheet = f"border-image: url({os.path.join('assets', 'card', f'{self.__id}.png')});"
+
+        self.setFixedSize(100, 139)
         
         self.hide()
 
@@ -26,8 +22,8 @@ class Card(QPushButton): # 카드 클래스의 도입부
     
     def hide(self):
         self.is_opened = False
-        self.setIcon(self.cover_pixmap)
+        self.setStyleSheet(self.cover_stylesheet)
 
     def show(self):
         self.is_opened = True
-        self.setIcon(self.picture_pixmap)
+        self.setStyleSheet(self.picture_stylesheet)

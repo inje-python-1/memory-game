@@ -1,7 +1,7 @@
 from enum import Enum
 from PySide6.QtWidgets import QMainWindow, QMenuBar, QMenu, QWidget, QHBoxLayout, QVBoxLayout, QMessageBox
-from PySide6.QtGui import QAction
 from PySide6.QtTest import QTest
+from PySide6.QtCore import Qt
 
 from game.Util import Util
 from game.Difficulty import Difficulty
@@ -25,7 +25,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         
         self.setWindowTitle("Memory Game")
-        self.resize(640, 480)
+        self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.MSWindowsFixedSizeDialogHint)
+        self.setStyleSheet("background: white;")
 
         menubar = QMenuBar()
         self.setMenuBar(menubar)
@@ -110,6 +111,8 @@ class MainWindow(QMainWindow):
         
         self.card_set = CardSet(self.__difficulty, self.card_clicked)
         self.layout.addLayout(self.card_set)
+        self.resize(0, 0)
+        self.centralWidget().update()
 
         self.tries_status.value = 0
 

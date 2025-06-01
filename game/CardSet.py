@@ -23,12 +23,12 @@ class CardSet(QGridLayout): # 카드셋 클래스의 도입부
 
     def register(self):
         for idx, card in enumerate(self.cards):
-            row, col = divmod(idx, self.difficulty.value)
+            row, col = divmod(idx, self.difficulty.value[1])
             self.addWidget(card, row, col)
 
     def reset(self): # 카드를 세트하는 메서드        
         self.unregister()
-        self.cards = [Card(i, lambda card: self.card_clicked(card)) for _ in range(2) for i in range(0, self.difficulty.value)] # 클래스의 cards필드에 카드들을 사이즈에 맞게 세트
+        self.cards = [Card(i, lambda card: self.card_clicked(card)) for _ in range(2) for i in range(0, self.difficulty.value[0])] # 클래스의 cards필드에 카드들을 사이즈에 맞게 세트
         self.register()
 
     def shuffle(self): # 카드를 섞는 메서드
