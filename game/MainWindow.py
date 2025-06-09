@@ -26,7 +26,7 @@ class MainWindow(QMainWindow):
         
         self.setWindowTitle("Memory Game")
         self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.MSWindowsFixedSizeDialogHint)
-        self.setStyleSheet("background: white;")
+        self.setStyleSheet("background: white; font-size: 13pt;")
 
         menubar = QMenuBar()
         self.setMenuBar(menubar)

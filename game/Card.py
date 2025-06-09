@@ -13,7 +13,7 @@ class Card(QPushButton): # 카드 클래스의 도입부
         self.cover_stylesheet = f"border-image: url('assets/card/cover.jpg');"
         self.picture_stylesheet = f"border-image: url('assets/card/{os.path.basename(str(self.__id))}.png');"
 
-        self.setFixedSize(100, 139)
+        self.setFixedSize(154, 214)
         
         self.hide()
 
