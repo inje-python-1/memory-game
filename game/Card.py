@@ -15,7 +15,7 @@ class Card(QPushButton): # 카드 클래스의 도입부
 
         self.setFixedSize(154, 214)
         
-        self.hide()
+        self.show()
 
     def __eq__(self, card):
         return isinstance(card, Card) and self.__id == card.__id

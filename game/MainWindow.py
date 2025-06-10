@@ -28,10 +28,11 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(Qt.WindowType.Dialog | Qt.WindowType.MSWindowsFixedSizeDialogHint)
         self.setStyleSheet("background: white; font-size: 13pt;")
 
-        menubar = QMenuBar()
+        menubar = QMenuBar(self)
+        menubar.setStyleSheet("background: #efefef;")
         self.setMenuBar(menubar)
 
-        self.game_menu = QMenu("Game")
+        self.game_menu = QMenu("Game", menubar)
         menubar.addMenu(self.game_menu)
 
         self.game_menu.addAction("New Game").triggered.connect(self.new_game)
@@ -57,7 +58,7 @@ class MainWindow(QMainWindow):
 
         time_status = StatusLayout("Time", "00:00")
         status_layout.addLayout(time_status)
-        self.timer = CustomTimer(time_status)
+        self.timer = CustomTimer(time_status, self.time_changed)
 
         self.tries_status = StatusLayout("Tries", 0)
         status_layout.addLayout(self.tries_status)
@@ -102,9 +103,15 @@ class MainWindow(QMainWindow):
     def check_end(self):
         if self.card_set.end:
             self.timer.stop()
-            QMessageBox(text=f"You win in {self.tries_status.value} tries and {self.timer.time_formatted}").exec()
+            msgbox = QMessageBox(self)
+            msgbox.setWindowTitle("Congratulations!!")
+            msgbox.setText(f"You win in {self.tries_status.value} tries and {self.timer.time_formatted}")
+            msgbox.exec()
+            self.tries_status.value -= 1
 
     def new_game(self):
+        self.opening_status = OpeningStatus.READY
+        self.opening_slot.clear()
         self.timer.reset()
         self.timer.start()
         if hasattr(self, "card_set"):
@@ -127,3 +134,9 @@ class MainWindow(QMainWindow):
         action = self.sender()
         action.setChecked(True)
         self.set_difficulty(Difficulty[action.objectName()])
+
+    def time_changed(self, time):
+        if time == 0:
+            for card in self.card_set.cards:
+                card.hide()
+            self.update()

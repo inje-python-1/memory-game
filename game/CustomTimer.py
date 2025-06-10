@@ -5,15 +5,19 @@ class CustomTimer():
 
     @property
     def time_formatted(self):
-        m, s = divmod(self.time, 60)
-        return f'{m:02}:{s:02}'
+        m, s = divmod(abs(self.time), 60)
+        if self.time < 0:
+            return f'-{m:02}:{s:02}'
+        else:
+            return f'{m:02}:{s:02}'
 
-    def __init__(self, widget):
+    def __init__(self, widget, time_changed):
         self.widget = widget
+        self.time_changed = time_changed
 
     def reset(self):
         self.stop()
-        self.time = 0
+        self.time = -3
     
     def stop(self):
         if hasattr(self, "timer"):
@@ -26,4 +30,5 @@ class CustomTimer():
         self.update()
 
     def update(self):
+        self.time_changed(self.time)
         self.widget.value = self.time_formatted
