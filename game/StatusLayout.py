@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QVBoxLayout, QLabel
 from PySide6.QtCore import Qt
 
+# 상태바용 레이아웃 (이름+값)
 class StatusLayout(QVBoxLayout):
     @property
     def name(self):
